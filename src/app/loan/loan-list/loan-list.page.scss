@@ -1,0 +1,85 @@
+/* Container general (centrado, padding) */
+.container {
+    padding: 20px;
+    max-width: 1200px; /* Ancho máximo para que no se extienda infinitamente en pantallas grandes */
+    margin: 0 auto;    /* Centrado horizontal */
+
+    h1 {
+        margin-top: 0;
+        margin-bottom: 25px;
+        font-size: 28px;
+        color: #333;
+        font-weight: 400; /* Estilo Material suave */
+    }
+
+    /* =======================================================
+       Sección de Filtros
+       ======================================================= */
+    .filters {
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column; /* Apilamos fila de inputs y fila de botones */
+        gap: 15px;
+
+        form {
+            display: flex; /* Inputs en fila horizontal */
+            flex-wrap: wrap; /* Para que respondan en pantallas pequeñas */
+            gap: 15px;
+            align-items: center; /* Alineación vertical */
+
+            mat-form-field {
+                flex: 1; /* Crecen por igual */
+                min-width: 250px; /* Ancho mínimo para que no se apachurren */
+            }
+        }
+
+        /* Botones de Limpiar/Filtrar (Alineados a la derecha) */
+        .filters-buttons {
+            display: flex;
+            justify-content: flex-end; /* Alineación a la derecha como en la imagen */
+            gap: 10px;
+        }
+    }
+
+    /* =======================================================
+       Tabla y Paginador
+       ======================================================= */
+    mat-table {
+        background-color: white;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ligera sombra */
+        margin-bottom: 5px; /* Espacio antes del paginador */
+
+        mat-header-row {
+            background-color: #fafafa; /* Fondo suave para la cabecera */
+            min-height: 56px;
+        }
+
+        mat-row {
+            min-height: 52px;
+            &:hover {
+                background-color: #f5f5f5; /* Efecto hover en las filas */
+            }
+        }
+
+        /* Padding en celdas para que respiren los datos */
+        mat-cell, mat-header-cell {
+            padding: 8px 16px;
+        }
+
+        /* Anchos de columna personalizados si quieres */
+        .cdk-column-action {
+            flex: 0 0 100px; /* La columna de acciones es fija */
+            justify-content: flex-end; /* Iconos a la derecha */
+        }
+    }
+
+    /* =======================================================
+       Sección del botón Nuevo Préstamo
+       ======================================================= */
+    .main-buttons {
+        display: flex;
+        justify-content: flex-end; /* Alineado a la derecha como en la imagen */
+        margin-top: 25px;
+    }
+}

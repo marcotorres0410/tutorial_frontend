@@ -1,0 +1,28 @@
+.container {
+    padding: 10px 20px;
+    min-width: 350px; /* Le da una anchura mínima para que no se vea encogido */
+
+    h1 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column; /* Apila los inputs uno debajo del otro */
+
+        mat-form-field {
+            width: 100%; /* Hace que los inputs ocupen todo el ancho disponible */
+        }
+    }
+
+    .buttons {
+        text-align: right; /* Mueve los botones a la derecha */
+        margin-top: 15px;
+
+        button {
+            margin-left: 10px; /* Separa un poco los botones entre sí */
+        }
+    }
+}
