@@ -12,18 +12,22 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import { provideNativeDateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; 
 
 @Component({
     selector: 'app-loan-edit',
     standalone: true,
-    providers: [provideNativeDateAdapter()],
-    imports: [FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, MatDatepickerModule],
+    providers: [
+        provideNativeDateAdapter(),
+        { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }
+    ],
+    imports: [FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, MatDatepickerModule, MatSnackBarModule],
     templateUrl: './loan-edit.html',
     styleUrl: './loan-edit.scss'
 })
 export class LoanEdit implements OnInit {
-    loan: Loan;
+    loan!: Loan;
     games: Game[] = [];
     clients: Client[] = [];
 
@@ -32,7 +36,8 @@ export class LoanEdit implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: { loan: Loan },
         private loanService: LoanService,
         private gameService: GameService,
-        private clientService: ClientService
+        private clientService: ClientService,
+        private snackBar: MatSnackBar 
     ) { }
 
     ngOnInit(): void {
@@ -68,37 +73,33 @@ export class LoanEdit implements OnInit {
     }
 
     onSave() {
-
-        // 1. Que no haya campos vacíos
+        
         if (!this.loan.game || !this.loan.client || !this.loan.startDate || !this.loan.endDate) {
-            alert("Todos los campos son obligatorios.");
+            this.snackBar.open("Todos los campos son obligatorios.", "Cerrar", { duration: 5000 });
             return;
         }
 
-        // 2. Que la fecha de fin no sea anterior a la de inicio
         if (this.loan.endDate < this.loan.startDate) {
-            alert("La fecha de fin no puede ser anterior a la de inicio.");
+            this.snackBar.open("La fecha de fin no puede ser anterior a la de inicio.", "Cerrar", { duration: 5000 });
             return;
         }
 
-        // 3. Que el préstamo no supere los 14 días
         const start = new Date(this.loan.startDate);
         const end = new Date(this.loan.endDate);
         const diffTime = Math.abs(end.getTime() - start.getTime());
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
 
         if (diffDays > 14) {
-            alert("El periodo de préstamo no puede ser superior a 14 días.");
+            this.snackBar.open("El periodo de préstamo no puede ser superior a 14 días.", "Cerrar", { duration: 5000 });
             return;
         }
 
-        // Si pasa nuestras validaciones del Frontend, enviamos al Backend
         this.loanService.saveLoan(this.loan).subscribe({
             next: () => {
                 this.dialogRef.close(true);
             },
             error: (err) => {
-                alert(err.error?.message || "Error al guardar. Comprueba las validaciones en base de datos.");
+                this.snackBar.open(err.error?.message || "Error al guardar. Comprueba las validaciones en base de datos.", "Cerrar", { duration: 5000 });
             }
         });
     }

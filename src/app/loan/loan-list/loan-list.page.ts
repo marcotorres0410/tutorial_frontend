@@ -13,7 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import { provideNativeDateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { LoanService } from '../loan.service';
 import { GameService } from '../../game/game.service';
 import { ClientService } from '../../client/client.service';
@@ -22,10 +22,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmation } from '../../core/dialog-confirmation/dialog-confirmation';
 import { LoanEdit } from '../loan-edit/loan-edit';
 
+
 @Component({
     selector: 'app-loan-list',
     standalone: true,
-    providers: [provideNativeDateAdapter()], 
+    providers: [
+        provideNativeDateAdapter(),
+        { provide: MAT_DATE_LOCALE, useValue: 'es-ES' } 
+    ], 
     imports: [
         MatButtonModule,
         MatIconModule,
