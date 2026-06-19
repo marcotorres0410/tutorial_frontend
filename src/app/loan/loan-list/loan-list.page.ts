@@ -54,7 +54,6 @@ export class LoanListPage implements OnInit {
     pageSize: number = 5;
     totalElements: number = 0;
 
-    // Variables para los filtros
     games: Game[] = [];
     clients: Client[] = [];
     filterGame: Game;
@@ -98,7 +97,6 @@ export class LoanListPage implements OnInit {
          let gameId = this.filterGame != null ? this.filterGame.id : null;
         let clientId = this.filterClient != null ? this.filterClient.id : null;
 
-        // FIX DE LA ZONA HORARIA: Convertimos a texto YYYY-MM-DD
         let dateStr = null;
         if (this.filterDate != null) {
             dateStr = this.filterDate.getFullYear() + "-" + 
@@ -106,9 +104,7 @@ export class LoanListPage implements OnInit {
                       ("0" + this.filterDate.getDate()).slice(-2);
         }
 
-        // Le pasamos el dateStr al servicio
         this.loanService.getLoans(pageable, gameId, clientId, dateStr).subscribe(data => {
-            // Metemos un pequeño tiempo para que Angular no se maree con el cambio a 0 elementos
             setTimeout(() => {
                 this.dataSource.data = data.content;
                 this.pageNumber = data.pageable.pageNumber;
@@ -119,7 +115,7 @@ export class LoanListPage implements OnInit {
     }
 
     onSearch() {
-        this.pageNumber = 0; // Volvemos a la página 1 al buscar
+        this.pageNumber = 0;
         this.loadPage();
     }
 

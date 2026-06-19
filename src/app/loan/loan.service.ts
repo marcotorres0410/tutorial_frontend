@@ -12,7 +12,6 @@ export class LoanService {
   protected readonly http = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/loan';
 
-  // Cambiamos date?: Date por date?: string
   getLoans(pageable: Pageable, gameId?: number, clientId?: number, date?: string): Observable<PaginatedData<Loan>> {
     return this.http.post<PaginatedData<Loan>>(this.baseUrl, { 
       pageable: pageable,
@@ -30,10 +29,8 @@ export class LoanService {
     const { id } = loan;
     const url = id ? `${this.baseUrl}/${id}` : this.baseUrl;
     
-    // Clonamos el objeto para no modificar el original de la pantalla directamente
     let loanToSave = Object.assign({}, loan);
     
-    // FIX DE ZONA HORARIA PARA GUARDAR
     if (loanToSave.startDate instanceof Date) {
         loanToSave.startDate = new Date(loanToSave.startDate.getTime() - loanToSave.startDate.getTimezoneOffset() * 60000).toISOString().split('T')[0] as any;
     }
